@@ -2,6 +2,7 @@
 
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 export function Header() {
 	return (
@@ -24,7 +25,7 @@ export function Header() {
 					<MagnifyingGlassIcon className="h-12 p-4" />
 				</div>
 				<div className="flex items-center gap-6 text-xs text-white whitespace-nowrap">
-					<div className="link">
+					<div className="link" onClick={() => signIn()}>
 						<p>Hello Gustavo</p>
 						<p className="font-extrabold md:text-sm">Account & Lists</p>
 					</div>
