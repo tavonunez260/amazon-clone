@@ -10,9 +10,8 @@ export function Header() {
 				<div className="flex items-center flex-grow sm:flex-grow-0 mt-2">
 					<Image
 						alt=""
-						className="cursor-pointer"
+						className="object-contain cursor-pointer"
 						height={40}
-						objectFit="contain"
 						src="https://links.papareact.com/f90"
 						width={150}
 					/>
