@@ -12,3 +12,7 @@ export type ProductResponse = {
 	rating: Rating;
 	title: string;
 };
+
+export type BasketType = {
+	items: ProductResponse[];
+};
