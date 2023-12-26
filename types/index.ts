@@ -13,6 +13,17 @@ export type ProductResponse = {
 	title: string;
 };
 
-export type BasketType = {
-	items: ProductResponse[];
+export type ProductType = {
+	category: string;
+	description: string;
+	hasPrime: boolean;
+	id: number;
+	image: string;
+	price: number;
+	rating: number;
+	title: string;
+};
+
+export type CartState = {
+	items: ProductType[];
 };

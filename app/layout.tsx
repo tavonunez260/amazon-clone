@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
 import React from 'react';
 
+import { NextAuthProvider } from '@/providers';
 import { StoreProvider } from '@/store';
 
 import type { Metadata } from 'next';
@@ -16,10 +17,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<StoreProvider>
-			<html lang="en">
-				<body className={inter.className}>{children}</body>
-			</html>
-		</StoreProvider>
+		<NextAuthProvider>
+			<StoreProvider>
+				<html lang="en">
+					<body className={inter.className}>{children}</body>
+				</html>
+			</StoreProvider>
+		</NextAuthProvider>
 	);
 }

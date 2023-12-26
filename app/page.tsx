@@ -13,7 +13,13 @@ export default async function Home() {
 			<Header />
 			<section className="max-w-screen-2xl mx-auto">
 				<Banner />
-				<ProductFeed products={products} />
+				<ProductFeed
+					products={products.map(product => ({
+						...product,
+						rating: Math.floor(product.rating.rate),
+						hasPrime: product.category === 'electronics'
+					}))}
+				/>
 			</section>
 		</main>
 	);
