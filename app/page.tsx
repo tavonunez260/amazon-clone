@@ -16,8 +16,9 @@ export default async function Home() {
 				<ProductFeed
 					products={products.map(product => ({
 						...product,
-						rating: Math.floor(product.rating.rate),
-						hasPrime: product.category === 'electronics'
+						count: 1,
+						hasPrime: product.category === 'electronics',
+						rating: Math.floor(product.rating.rate)
 					}))}
 				/>
 			</section>

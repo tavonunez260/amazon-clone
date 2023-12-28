@@ -15,6 +15,7 @@ export type ProductResponse = {
 
 export type ProductType = {
 	category: string;
+	count: number;
 	description: string;
 	hasPrime: boolean;
 	id: number;
@@ -26,4 +27,9 @@ export type ProductType = {
 
 export type CartState = {
 	items: ProductType[];
+};
+
+export type RemoveItemHandler = {
+	action: 'decrement' | 'delete';
+	id: number;
 };

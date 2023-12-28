@@ -13,8 +13,8 @@ export default function Checkout() {
 	const handleAddItemToCart = (product: ProductType) => {
 		dispatch(addToCart(product));
 	};
-	const handleRemoveItemFromCart = (id: number) => {
-		dispatch(removeFromCart(id));
+	const handleRemoveItemFromCart = (id: number, action: 'delete' | 'decrement') => {
+		dispatch(removeFromCart({ action, id }));
 	};
 
 	return (

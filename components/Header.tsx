@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
 import { useSelector } from '@/store';
+import { getTotalCount } from '@/utils';
 
 export function Header() {
 	const cart = useSelector(state => state.cart);
@@ -48,7 +49,7 @@ export function Header() {
 					</div>
 					<div className="relative flex items-center link" onClick={() => router.push('/checkout')}>
 						<span className="absolute top-0 right-0 md:right-10 h-4 w-4 bg-yellow-400 text-center text-black font-bold rounded-full">
-							{cart.items.length}
+							{getTotalCount(cart.items)}
 						</span>
 						<ShoppingCartIcon className="h-10" />
 						<p className="hidden md:inline mt-2 font-extrabold md:text-sm">Cart</p>

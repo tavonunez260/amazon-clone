@@ -1,4 +1,4 @@
-import { StarIcon } from '@heroicons/react/24/solid';
+import { MinusIcon, PlusIcon, StarIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 
 import { ProductType } from '@/types';
@@ -6,7 +6,7 @@ import { copFormatter } from '@/utils';
 
 interface CheckoutProductProps {
 	handleAddItemToCart: (product: ProductType) => void;
-	handleRemoveItemFromCart: (id: number) => void;
+	handleRemoveItemFromCart: (id: number, action: 'delete' | 'decrement') => void;
 	product: ProductType;
 }
 
@@ -25,7 +25,7 @@ export function CheckoutProduct({
 				width={192}
 			/>
 			<div className="col-span-3">
-				<p>{product.title}</p>
+				<p className="font-bold">{product.title}</p>
 				<div className="flex">
 					{Array(product.rating)
 						.fill(null)
@@ -34,8 +34,9 @@ export function CheckoutProduct({
 						))}
 				</div>
 				<p className="text-xs my-2 line-clamp-3">{product.description}</p>
-				<div className="mb-5">
+				<div className="mb-5 flex flex-col gap-2">
 					<p>{copFormatter.format(product.price)}</p>
+					<p className="text-lg">Total {copFormatter.format(product.price * product.count)}</p>
 				</div>
 				{product.hasPrime && (
 					<div className="flex items-center gap-2">
@@ -50,10 +51,21 @@ export function CheckoutProduct({
 				)}
 			</div>
 			<div className="flex flex-col gap-2 my-auto justify-self-end">
-				<button className="button" onClick={() => handleAddItemToCart(product)}>
-					Add to cart
-				</button>
-				<button className="button" onClick={() => handleRemoveItemFromCart(product.id)}>
+				<div className="flex justify-between items-center">
+					<button
+						className="button"
+						disabled={product.count === 1}
+						onClick={() => handleRemoveItemFromCart(product.id, 'decrement')}
+					>
+						<MinusIcon className="w-5 h-5 text-yellow-800" />
+					</button>
+					<p>{product.count}</p>
+
+					<button className="button" onClick={() => handleAddItemToCart(product)}>
+						<PlusIcon className="w-5 h-5 text-yellow-800" />
+					</button>
+				</div>
+				<button className="button" onClick={() => handleRemoveItemFromCart(product.id, 'delete')}>
 					Remove from cart
 				</button>
 			</div>
