@@ -2,7 +2,7 @@ import { StarIcon } from '@heroicons/react/24/solid';
 import Image from 'next/image';
 
 import { ProductType } from '@/types';
-import { copFormatter } from '@/utils';
+import { usdFormatter } from '@/utils';
 
 interface ProductProps {
 	handleAddItemToCart: (product: ProductType) => void;
@@ -29,7 +29,7 @@ export function Product({ handleAddItemToCart, product }: ProductProps) {
 			</div>
 			<p className="text-xs my-2 line-clamp-2">{product.description}</p>
 			<div className="mb-5">
-				<p>{copFormatter.format(product.price)}</p>
+				<p>{usdFormatter.format(product.price)}</p>
 			</div>
 			{product.hasPrime && (
 				<div className="flex items-center gap-2 -mt-5">

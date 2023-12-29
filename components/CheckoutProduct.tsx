@@ -1,8 +1,9 @@
 import { MinusIcon, PlusIcon, StarIcon } from '@heroicons/react/24/solid';
+import clsx from 'clsx';
 import Image from 'next/image';
 
 import { ProductType } from '@/types';
-import { copFormatter } from '@/utils';
+import { usdFormatter } from '@/utils';
 
 interface CheckoutProductProps {
 	handleAddItemToCart: (product: ProductType) => void;
@@ -35,8 +36,8 @@ export function CheckoutProduct({
 				</div>
 				<p className="text-xs my-2 line-clamp-3">{product.description}</p>
 				<div className="mb-5 flex flex-col gap-2">
-					<p>{copFormatter.format(product.price)}</p>
-					<p className="text-lg">Total {copFormatter.format(product.price * product.count)}</p>
+					<p>{usdFormatter.format(product.price)}</p>
+					<p className="text-lg">Total {usdFormatter.format(product.price * product.count)}</p>
 				</div>
 				{product.hasPrime && (
 					<div className="flex items-center gap-2">
@@ -57,7 +58,11 @@ export function CheckoutProduct({
 						disabled={product.count === 1}
 						onClick={() => handleRemoveItemFromCart(product.id, 'decrement')}
 					>
-						<MinusIcon className="w-5 h-5 text-yellow-800" />
+						<MinusIcon
+							className={clsx(
+								`w-5 h-5 ${product.count === 1 ? 'text-gray-500' : 'text-yellow-800'}`
+							)}
+						/>
 					</button>
 					<p>{product.count}</p>
 
