@@ -1,5 +1,6 @@
 'use client';
 
+import { loadStripe } from '@stripe/stripe-js';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
@@ -9,6 +10,8 @@ import { CheckoutProduct } from '@/components/CheckoutProduct';
 import { addToCart, removeFromCart, useDispatch, useSelector } from '@/store';
 import { ProductType } from '@/types';
 import { getTotalCount, getTotalPrice, usdFormatter } from '@/utils';
+
+const stripePromise = loadStripe(process.env.stripe_public_key as string);
 
 export default function Checkout() {
 	const cart = useSelector(state => state.cart);
@@ -20,6 +23,22 @@ export default function Checkout() {
 	};
 	const handleRemoveItemFromCart = (id: number, action: 'delete' | 'decrement') => {
 		dispatch(removeFromCart({ action, id }));
+	};
+	const handleCheckout = async () => {
+		if (data) {
+			const stripe = await stripePromise;
+			if (stripe) {
+				stripe.redirectToCheckout({
+					lineItems: cart.items.map(item => ({
+						price: item.priceId,
+						quantity: item.count
+					})),
+					mode: 'payment',
+					successUrl: `${window.location.origin}/success`,
+					cancelUrl: `${window.location.origin}/checkout`
+				});
+			}
+		}
 	};
 
 	return (
@@ -60,7 +79,7 @@ export default function Checkout() {
 								{usdFormatter.format(getTotalPrice(cart.items))}
 							</span>
 						</h2>
-						<button className="button mt-2" disabled={!data}>
+						<button className="button mt-2" disabled={!data} role="link">
 							{!data ? 'Sign In to checkout' : 'Proceed to checkout'}
 						</button>
 					</div>
