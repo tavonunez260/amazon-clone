@@ -1,6 +1,7 @@
 'use client';
 
 import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
@@ -25,19 +26,15 @@ export default function Checkout() {
 		dispatch(removeFromCart({ action, id }));
 	};
 	const handleCheckout = async () => {
-		if (data) {
+		if (data && data.user) {
 			const stripe = await stripePromise;
-			if (stripe) {
-				stripe.redirectToCheckout({
-					lineItems: cart.items.map(item => ({
-						price: item.priceId,
-						quantity: item.count
-					})),
-					mode: 'payment',
-					successUrl: `${window.location.origin}/success`,
-					cancelUrl: `${window.location.origin}/checkout`
-				});
-			}
+			const checkoutSession = await axios.post('/api/create-checkout-session', {
+				items: cart.items,
+				email: data.user.email
+			});
+
+			const result = await stripe?.redirectToCheckout({ sessionId: checkoutSession.data.id });
+			if (result && result.error) alert(result.error.message);
 		}
 	};
 
@@ -79,7 +76,7 @@ export default function Checkout() {
 								{usdFormatter.format(getTotalPrice(cart.items))}
 							</span>
 						</h2>
-						<button className="button mt-2" disabled={!data} role="link">
+						<button className="button mt-2" disabled={!data} role="link" onClick={handleCheckout}>
 							{!data ? 'Sign In to checkout' : 'Proceed to checkout'}
 						</button>
 					</div>

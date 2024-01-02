@@ -21,6 +21,7 @@
 				"order": "alphabetically"
 			}
 		}],
+		"@typescript-eslint/no-var-requires": 0,
 		"prettier/prettier": "error",
 		"arrow-body-style": ["error", "as-needed"],
 		"import/order": [
