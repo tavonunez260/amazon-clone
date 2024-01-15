@@ -4,7 +4,9 @@ import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
 import clsx from 'clsx';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import React, { useEffect, useState } from 'react';
 
 import { Header } from '@/components';
 import { CheckoutProduct } from '@/components/CheckoutProduct';
@@ -15,9 +17,11 @@ import { getTotalCount, getTotalPrice, usdFormatter } from '@/utils';
 const stripePromise = loadStripe(process.env.stripe_public_key as string);
 
 export default function Checkout() {
+	const [checkoutLoading, setCheckoutLoading] = useState(false);
 	const cart = useSelector(state => state.cart);
 	const dispatch = useDispatch();
 	const { data } = useSession();
+	const router = useRouter();
 
 	const handleAddItemToCart = (product: ProductType) => {
 		dispatch(addToCart(product));
@@ -33,10 +37,18 @@ export default function Checkout() {
 				email: data.user.email
 			});
 
+			setCheckoutLoading(true);
 			const result = await stripe?.redirectToCheckout({ sessionId: checkoutSession.data.id });
+			setCheckoutLoading(false);
 			if (result && result.error) alert(result.error.message);
 		}
 	};
+
+	useEffect(() => {
+		if (cart.items.length === 0) {
+			router.push('/');
+		}
+	}, [cart.items.length, router]);
 
 	return (
 		<main className="bg-gray-100">
@@ -76,8 +88,17 @@ export default function Checkout() {
 								{usdFormatter.format(getTotalPrice(cart.items))}
 							</span>
 						</h2>
-						<button className="button mt-2" disabled={!data} role="link" onClick={handleCheckout}>
-							{!data ? 'Sign In to checkout' : 'Proceed to checkout'}
+						<button
+							className="button mt-2"
+							disabled={!data || checkoutLoading}
+							role="link"
+							onClick={handleCheckout}
+						>
+							{!data
+								? 'Sign In to checkout'
+								: !checkoutLoading
+									? 'Proceed to checkout'
+									: 'Loading...'}
 						</button>
 					</div>
 				)}

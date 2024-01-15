@@ -37,12 +37,12 @@ export const getTotalPrice = (items: ProductType[]) =>
 
 export const transformedItems = (items: ProductType[]) =>
 	items.map(item => ({
-		description: item.description,
 		price_data: {
 			currency: 'usd',
 			product_data: {
 				name: item.title,
-				images: [item.image]
+				images: [item.image],
+				description: item.description
 			},
 			unit_amount: item.price * 100
 		},

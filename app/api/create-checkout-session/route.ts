@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
 	const { email, items } = res;
 	const session = await stripe.checkout.sessions.create({
 		payment_method_types: ['card'],
+		shipping_options: [{ shipping_rate: 'shr_1OYhcsCDnmLkgQFbzWswKH60' }],
 		shipping_address_collection: {
 			allowed_countries: allowedCountries
 		},
