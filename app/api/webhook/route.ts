@@ -12,12 +12,6 @@ const app = !admin.apps.length
 		})
 	: admin.app();
 
-export const config = {
-	api: {
-		bodyParser: false
-	}
-};
-
 const fulfillOrder = async (session: any) =>
 	app
 		.firestore()
