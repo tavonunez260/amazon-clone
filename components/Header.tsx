@@ -39,11 +39,11 @@ export function Header() {
 							<p className="font-extrabold md:text-sm">Sign Out</p>
 						</div>
 					)}
-					<div className="link" onClick={!data ? () => signIn() : () => {}}>
+					<div className="link" onClick={() => !data && signIn()}>
 						<p>{data ? `Hello, ${data.user?.name?.split(' ')[0]}` : 'Sign In'}</p>
 						<p className="font-extrabold md:text-sm">Account & Lists</p>
 					</div>
-					<div className="link">
+					<div className="link" onClick={() => data && router.push('/orders')}>
 						<p>Returns</p>
 						<p className="font-extrabold md:text-sm">& Orders</p>
 					</div>

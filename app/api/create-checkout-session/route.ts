@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
 
 import { ProductType } from '@/types';
 import { allowedCountries, transformedItems } from '@/utils';
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY as string);
-
 export async function POST(request: NextRequest) {
+	const stripe = new Stripe(process.env.stripe_secret_key as string, {
+		apiVersion: '2023-10-16'
+	});
+
 	const res: { email: string; items: ProductType[] } = await request.json();
 	const { email, items } = res;
 	const session = await stripe.checkout.sessions.create({

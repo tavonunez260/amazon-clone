@@ -1,3 +1,5 @@
+import { Stripe } from 'stripe';
+
 import { ProductType } from '@/types';
 
 export const usdFormatter = new Intl.NumberFormat('en-US', {
@@ -6,28 +8,29 @@ export const usdFormatter = new Intl.NumberFormat('en-US', {
 	currencyDisplay: 'code' // Output will use the currency code
 });
 
-export const allowedCountries = [
-	'US',
-	'CA',
-	'GB',
-	'AU',
-	'NZ',
-	'IE',
-	'DE',
-	'FR',
-	'ES',
-	'IT',
-	'JP',
-	'AR',
-	'CO',
-	'MX',
-	'PE',
-	'CL',
-	'UY',
-	'VE',
-	'EC',
-	'BR'
-];
+export const allowedCountries: Stripe.Checkout.Session.ShippingAddressCollection.AllowedCountry[] =
+	[
+		'US',
+		'CA',
+		'GB',
+		'AU',
+		'NZ',
+		'IE',
+		'DE',
+		'FR',
+		'ES',
+		'IT',
+		'JP',
+		'AR',
+		'CO',
+		'MX',
+		'PE',
+		'CL',
+		'UY',
+		'VE',
+		'EC',
+		'BR'
+	];
 
 export const getTotalCount = (items: ProductType[]) =>
 	items.reduce((total, item) => total + item.count, 0);

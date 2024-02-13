@@ -10,7 +10,8 @@ const nextConfig = {
 		]
 	},
 	env: {
-		stripe_public_key: process.env.STRIPE_PUBLIC_KEY
+		stripe_secret_key: process.env.REACT_APP_STRIPE_SECRET_KEY,
+		stripe_public_key: process.env.REACT_APP_STRIPE_PUBLIC_KEY
 	}
 };
 

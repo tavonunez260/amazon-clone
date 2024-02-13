@@ -1,3 +1,6 @@
+import { Timestamp } from '@firebase/firestore';
+import Stripe from 'stripe';
+
 export type Rating = {
 	count: number;
 	rate: number;
@@ -32,4 +35,21 @@ export type CartState = {
 export type RemoveItemHandler = {
 	action: 'decrement' | 'delete';
 	id: number;
+};
+
+export type FirebaseOrders = {
+	amount: number;
+	amount_shipping: number;
+	id: string;
+	images: string[];
+	timestamp: Timestamp;
+};
+
+export type OrderType = {
+	amount: number;
+	amountShipping: number;
+	id: string;
+	images: string[];
+	items: Array<Stripe.LineItem>;
+	timestamp: number;
 };

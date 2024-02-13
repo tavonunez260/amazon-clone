@@ -3,7 +3,6 @@
 import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
 import clsx from 'clsx';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
@@ -14,7 +13,7 @@ import { addToCart, removeFromCart, useDispatch, useSelector } from '@/store';
 import { ProductType } from '@/types';
 import { getTotalCount, getTotalPrice, usdFormatter } from '@/utils';
 
-const stripePromise = loadStripe(process.env.stripe_public_key as string);
+const stripePromise = loadStripe(process.env.stripe_public_key ?? '');
 
 export default function Checkout() {
 	const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -45,13 +44,13 @@ export default function Checkout() {
 	};
 
 	useEffect(() => {
-		if (cart.items.length === 0) {
+		if (!data) {
 			router.push('/');
 		}
-	}, [cart.items.length, router]);
+	}, [data, router]);
 
 	return (
-		<main className="bg-gray-100">
+		<main className="bg-gray-100 min-h-screen">
 			<Header />
 			<section className="lg:flex gap-5 max-w-screen-2xl mx-auto">
 				<div
@@ -59,13 +58,6 @@ export default function Checkout() {
 						`flex-grow-0 my-5 ${getTotalCount(cart.items) === 0 && 'w-full shadow-md'}`
 					)}
 				>
-					<Image
-						alt="checkout-banner"
-						className="w-full object-contain"
-						height={250}
-						src="https://links.papareact.com/ikj"
-						width={1020}
-					/>
 					<div className="flex flex-col p-5 gap-10 bg-white">
 						<h1 className="text-3xl border-b pb-4">
 							{getTotalCount(cart.items) === 0 ? 'Your cart is empty' : 'Cart'}
